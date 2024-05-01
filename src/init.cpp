@@ -88,7 +88,7 @@ Conf init(args_iter begin, args_iter end) {
   std::optional<fs::path> input_file, output_file, config_file;
   ull max_ram = 0;
 
-  for (; begin <= end; ++begin) {
+  for (; begin < end; ++begin) {
     if ((*begin == "-h") || (*begin == "--help")) {
       std::cout << "'" << *begin << "' option is ignored\n";
     } else if (*begin == "-o") {
