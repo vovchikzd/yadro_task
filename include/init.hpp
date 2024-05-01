@@ -1,17 +1,19 @@
 #ifndef YADRO_TASK_INIT
 #define YADRO_TASK_INIT
 
-#include <exception>
+#include <string>
+#include <vector>
+#include <filesystem>
 
-class init_except final: std::exception {
-  const char* message;
-public:
-  init_except(const char* message);
-  const char* what() const noexcept override;
+namespace fs = std::filesystem;
+using ull = unsigned long long int;
+
+struct Conf {
+  fs::path input_file, output_file, tmp_folder;
+  ull write_delay, read_delay, rewind_delay, shift_delay, max_ram;
 };
 
-struct Conf {};
-
-Conf init(int argc, char** argv);
+using args_iter = typename std::vector<std::string>::iterator;
+Conf init(args_iter begin, args_iter end);
 
 #endif  // YADRO_TASK_INIT

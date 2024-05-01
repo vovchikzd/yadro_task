@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(fsort
+project(ext-sort
           LANGUAGES CXX)
 set(PRJ_INCLUDE_DIR "include")
 set(PRJ_SRC_DIR "src")
@@ -8,6 +8,7 @@ set(PRJ_SRC_DIR "src")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
+add_compile_options(-Wall -Wextra -Wpedantic)
 
 # only for ninja and only from 24 version
 if(CMAKE_GENERATOR STREQUAL "Ninja"
@@ -15,11 +16,11 @@ if(CMAKE_GENERATOR STREQUAL "Ninja"
   set(CMAKE_COLOR_DIAGNOSTICS On) 
 endif()
 
-add_executable(fsort main.cpp)
-target_sources(fsort
+add_executable(ext-sort main.cpp)
+target_sources(ext-sort
                  PRIVATE
                   ${PRJ_SRC_DIR}/init.cpp)
-target_include_directories(fsort
+target_include_directories(ext-sort
                              PRIVATE ${PRJ_INCLUDE_DIR})
 
 # target_sources(result

@@ -6,35 +6,51 @@
 
 #include "init.hpp"
 
+//std::string get_date_time() {
+//  std::stringstream result;
+//  auto t  = std::time(nullptr);
+//  auto tm = std::localtime(&t);
+//  result << std::put_time(tm, "%d-%m-%Y_%H-%M-%S");
+//  return result.str();
+//}
 
 void print_help(std::ostream& stream = std::cout) {
   stream
-      << "Usage: fsort INPUT FILE [OPTIONS]\n\n"
-         "Be aware that all invalib options will be ignored (as well as all\n"
-         "unrecognized files)\n\n"
-         "Options:\n"
-         "     -h, --help    print this help message (in case this option "
-         "will\n"
-         "                   be pass with any others options it will be "
-         "ignored)\n\n"
-         "     -o,           specify name of outputs file (default is name of\n"
-         "                   input file with .res format)\n\n"
-         "Setting options (in case any option is passed, it will\n"
-         "overwrite option from configure file):\n"
-         "     -m,           specify delay to rewind tape\n"
-         "     -r,           specify delay to read from tape\n" 
-         "     -w,           specify delay to write to tape\n"
-         "     -s,           specify delay to shift tape\n\n"
-         "Rules to write configure file:\n"
-         "  configure file will be searced in:\n"
-         "    {$HOME}/.config/fsort.conf or {$HOME}/.config/fsort/config.conf\n"
-         "  all settings are written in the order 'write read rewind shift'\n"
-         "and must be space/tab/newline separated\n";
+    << "Usage: ext-sort INPUT FILE [OPTION ARGUMENT]\n\n"
+       "Be aware that all invalib options will be ignored (as well as all\n"
+       "unrecognized arguments)\n"
+       "First argument being a file is considered as input file\n\n"
+       "Options:\n"
+       "     -h, --help    print this help message (in case this option "
+       "will\n"
+       "                   be pass with any others options it will be "
+       "ignored)\n\n"
+       "     -o,           specify name of outputs file (default is name of\n"
+       "                   input file with .res format)\n\n"
+       "     -c,           specify config file, all settings are written in\n"
+       "                   in the order 'write read rewind shift' and must\n"
+       "                   be space/tab/newline separated. Optionally as fifth\n"
+       "                   setting can be specifed max availabe RAM in bytes\n\n"
+       "     -m,           specify max available RAM for sort in bytes\n\n"
+       "     -M,           specify max abailable RAM for sort in megabytes\n\n"
+       "Default value for any setting is zero.\n"
+       "To skip any setting in config file, its value must be zero.\n"
+       "If max RAM not specified (or specified as zero) I assume that\n"
+       "  there isn't restriction in RAM usage.\n"
+       "In case max RAM usage is specified both through config file and argument,\n"
+       "  the value from file is used\n"
+       "All numbers are expected to be integer non-negative values\n";
 }
 
 int main(int argc, char* argv[]) {
   if (argc == 1) {
     std::cerr << "Should be specified at leas input file\n";
+    print_help(std::cerr);
+    return EXIT_FAILURE;
+  }
+
+  if (argc > 11) {
+    std::cerr << "ERROR: Too many argument passed\n";
     print_help(std::cerr);
     return EXIT_FAILURE;
   }
@@ -48,8 +64,9 @@ int main(int argc, char* argv[]) {
 
   Conf conf;
   try {
-    conf = init(argc, argv);
-  } catch (init_except& exc) { // TODO
+    std::vector<std::string> args(argv, argv + argc);
+    conf = init(args.begin(), args.end());
+  } catch (std::invalid_argument& exc) {
     std::cerr << "ERROR: " << exc.what() << '\n';
     return EXIT_FAILURE;
   }
