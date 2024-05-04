@@ -17,8 +17,10 @@
 void print_help(std::ostream& stream = std::cout) {
   stream
     << "Usage: ext-sort INPUT FILE [OPTION ARGUMENT]\n\n"
+       "Tape file (input file) must has newline separated data, otherwise write\n"
+       "  to this tape is ambiguous\n"
        "Be aware that all invalib options will be ignored (as well as all\n"
-       "unrecognized arguments)\n"
+       "  unrecognized arguments)\n"
        "First argument being a file is considered as input file\n\n"
        "Options:\n"
        "     -h, --help    print this help message (in case this option "
@@ -39,7 +41,8 @@ void print_help(std::ostream& stream = std::cout) {
        "  there isn't restriction in RAM usage.\n"
        "In case max RAM usage is specified both through config file and argument,\n"
        "  the value from file is used\n"
-       "All numbers are expected to be integer non-negative values\n";
+       "All numbers are expected to be integer non-negative values, otherwise will\n"
+       "  be used default (zero) value";
 }
 
 int main(int argc, char* argv[]) {
@@ -64,9 +67,12 @@ int main(int argc, char* argv[]) {
 
   Conf conf;
   try {
-    std::vector<std::string> args(argv, argv + argc);
+    std::vector<std::string> args(argv + 1, argv + argc);
     conf = init(args.begin(), args.end());
   } catch (std::invalid_argument& exc) {
+    std::cerr << "ERROR: " << exc.what() << '\n';
+    return EXIT_FAILURE;
+  } catch (std::exception& exc) {
     std::cerr << "ERROR: " << exc.what() << '\n';
     return EXIT_FAILURE;
   }

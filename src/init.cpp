@@ -83,7 +83,6 @@ std::tuple<ull, ull, ull, ull, std::optional<ull>> read_conf(
 }
 
 Conf init(args_iter begin, args_iter end) {
-  ++begin;
 
   std::optional<fs::path> input_file, output_file, config_file;
   ull max_ram = 0;
