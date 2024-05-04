@@ -5,7 +5,7 @@ project(ext-sort
 set(PRJ_INCLUDE_DIR "include")
 set(PRJ_SRC_DIR "src")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 add_compile_options(-Wall -Wextra -Wpedantic)
@@ -19,7 +19,8 @@ endif()
 add_executable(ext-sort main.cpp)
 target_sources(ext-sort
                  PRIVATE
-                  ${PRJ_SRC_DIR}/init.cpp)
+                  ${PRJ_SRC_DIR}/init.cpp
+                  ${PRJ_SRC_DIR}/tape.cpp)
 target_include_directories(ext-sort
                              PRIVATE ${PRJ_INCLUDE_DIR})
 

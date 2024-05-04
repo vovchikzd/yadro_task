@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "init.hpp"
+#include "tape.hpp"
 
 //std::string get_date_time() {
 //  std::stringstream result;
@@ -31,8 +32,9 @@ void print_help(std::ostream& stream = std::cout) {
        "                   input file with .res format)\n\n"
        "     -c,           specify config file, all settings are written in\n"
        "                   in the order 'write read rewind shift' and must\n"
-       "                   be space/tab/newline separated. Optionally as fifth\n"
-       "                   setting can be specifed max availabe RAM in bytes\n\n"
+       "                   be space/tab/newline separated. All delays in seconds.\n"
+       "                   Optionally as fifth setting can be specifed max\n"
+       "                   availabe RAM in bytes\n\n"
        "     -m,           specify max available RAM for sort in bytes\n\n"
        "     -M,           specify max abailable RAM for sort in megabytes\n\n"
        "Default value for any setting is zero.\n"
