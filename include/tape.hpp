@@ -2,8 +2,8 @@
 #define YADRO_TASK_TAPE
 
 #include <concepts>
-#include <string>
 #include <exception>
+#include <string>
 
 #include "init.hpp"
 #include "itape.hpp"
@@ -11,19 +11,20 @@
 
 class tape final: itape {
   tape_head head;
-  ull write_delay{};
-  ull read_delay{};
-  ull rewind_delay{};
-  ull shift_delay{};
+  const ull write_delay{};
+  const ull read_delay{};
+  const ull rewind_delay{};
+  const ull shift_delay{};
 
-  int tape_convert(const std::string& str) const;
-  void tape_sleep(ull duration) const;
+  int tape_convert(const std::string& str);
+  void tape_sleep(const ull duration);
+
 public:
-  tape() = default;
+  tape() = delete;
 
   template <std::convertible_to<fs::path> T>
-  tape(T&& file, ull write_delay, ull read_delay, ull rewind_delay,
-       ull shift_delay)
+  tape(T&& file, ull write_delay = 0, ull read_delay = 0, ull rewind_delay = 0,
+       ull shift_delay = 0)
       : head(std::forward<T>(file))
       , write_delay(write_delay)
       , read_delay(read_delay)
@@ -31,23 +32,26 @@ public:
       , shift_delay(shift_delay) {}
 
   void write(int number) override;
-  int read() const override;
+  int read() override;
 
-  void shift_forward() const override;
-  void shift_back() const override;
+  void shift_forward() override;
+  void shift_back() override;
 
-  void rewind_forward(size_t offset) const override;
-  void rewind_back(size_t offset) const override;
+  void rewind_forward(size_t offset) override;
+  void rewind_back(size_t offset) override;
 
-  void set_path(const fs::path& path);   
+  void to_end();
+  void to_begin();
 };
+
 
 class convert_error final: public std::exception {
   const char* message;
+
 public:
   convert_error() = default;
   convert_error(const char* message);
   const char* what() const noexcept override;
 };
 
-#endif // YADRO_TASK_TAPE
+#endif  // YADRO_TASK_TAPE

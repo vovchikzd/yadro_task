@@ -17,9 +17,10 @@
 
 void print_help(std::ostream& stream = std::cout) {
   stream
-    << "Usage: ext-sort INPUT FILE [OPTION ARGUMENT]\n\n"
-       "Tape file (input file) must has newline separated data, otherwise write\n"
-       "  to this tape is ambiguous\n"
+    << "Usage: ext-sort INPUT FILE [OPTION ARGUMENT(S)]\n\n"
+       "Tape file (input file) must has numbers with padding up to 11 characters\n"
+       "  plus space/tab/newline separator, otherwise all operations (write/read/rewind/shift)\n"
+       "  to this tape are ambiguous\n"
        "Be aware that all invalib options will be ignored (as well as all\n"
        "  unrecognized arguments)\n"
        "First argument being a file is considered as input file\n\n"

@@ -1,48 +1,48 @@
 #include "tape.hpp"
 
 #include <chrono>
-#include <thread>
 #include <iostream>
+#include <thread>
 
 using std::chrono::seconds;
 using std::this_thread::sleep_for;
 
 void tape::write(int number) {
   if (write_delay != 0) tape_sleep(write_delay);
-  head = number;
+  head.write(number);
 }
 
-int tape::read() const {
+int tape::read() {
   if (read_delay != 0) tape_sleep(read_delay);
   int result = tape_convert(head.value());
-  return result
+  return result;
 }
 
-void tape::shift_forward() const {
+void tape::shift_forward() {
   if (shift_delay != 0) tape_sleep(shift_delay);
-  ++head;
+  if (!head.eof()) ++head;
 }
 
-void tape::shift_back() const {
+void tape::shift_back() {
   if (shift_delay != 0) tape_sleep(shift_delay);
-  --head;
+  if (!head.bof()) --head;
 }
 
-void tape::rewind_forward(size_t offset) const {
+void tape::rewind_forward(size_t offset) {
   if (rewind_delay != 0) tape_sleep(rewind_delay);
-  for (size_t cur_offset = 0; cur_offset < offset; ++cur_offset) ++head;
+  for (size_t cur_offset = 0; cur_offset < offset && !head.eof(); ++cur_offset)
+    ++head;
 }
 
-void tape::rewind_back(size_t offset) const {
+void tape::rewind_back(size_t offset) {
   if (rewind_delay != 0) tape_sleep(rewind_delay);
-  for (size_t cur_offset = 0; cur_offset < offset; ++cur_offset) --head;
+  for (size_t cur_offset = 0; cur_offset < offset && !head.bof(); ++cur_offset)
+    --head;
 }
 
-void tape::set_path(const fs::path& path) { head = tape_head(path); }
+void tape::tape_sleep(const ull duration) { sleep_for(seconds(duration)); }
 
-void tape::tape_sleep(ull duration) const { sleep_for(seconds(duration)); }
-
-int tape::tape_convert(const std::string& str) const {
+int tape::tape_convert(const std::string& str) {
   int result;
   size_t pos{};
 
@@ -61,10 +61,17 @@ int tape::tape_convert(const std::string& str) const {
     throw convert_error();
   }
 
-  return resutl;
+  return result;
 }
 
+void tape::to_end() {
+  while (!head.eof()) ++head;
+}
+
+void tape::to_begin() {
+  while (!head.bof()) --head;
+}
 
 convert_error::convert_error(const char* message): message(message) {}
 
-const char* what() const noexcept { return message; }
+const char* convert_error::what() const noexcept { return message; }
