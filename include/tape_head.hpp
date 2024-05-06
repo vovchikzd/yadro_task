@@ -45,6 +45,7 @@ public:
 
   tape_head& operator++();
   tape_head& operator--();
+  fs::path get_path();
 };
 
 #endif  // YADRO_TASK_TAPE_HEAD

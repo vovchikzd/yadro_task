@@ -72,6 +72,10 @@ void tape::to_begin() {
   while (!head.bof()) --head;
 }
 
+fs::path tape::path() {
+  return head.get_path();
+}
+
 convert_error::convert_error(const char* message): message(message) {}
 
 const char* convert_error::what() const noexcept { return message; }

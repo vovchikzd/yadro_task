@@ -4,10 +4,13 @@
 #include <concepts>
 #include <exception>
 #include <string>
+#include <filesystem>
 
 #include "init.hpp"
 #include "itape.hpp"
 #include "tape_head.hpp"
+
+namespace fs = std::filesystem;
 
 class tape final: itape {
   tape_head head;
@@ -42,6 +45,7 @@ public:
 
   void to_end();
   void to_begin();
+  fs::path path();
 };
 
 

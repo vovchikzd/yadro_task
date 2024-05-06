@@ -74,3 +74,7 @@ std::string tape_head::padding(int number) {
   size_t space_num = 11 - result.size();
   return result + std::string(space_num, ' ');
 }
+
+fs::path tape_head::get_path() {
+  return file_path;
+}
