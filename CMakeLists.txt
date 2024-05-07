@@ -21,7 +21,8 @@ target_sources(ext-sort
                  PRIVATE
                   ${PRJ_SRC_DIR}/init.cpp
                   ${PRJ_SRC_DIR}/tape.cpp
-                  ${PRJ_SRC_DIR}/tape_head.cpp)
+                  ${PRJ_SRC_DIR}/tape_head.cpp
+                  ${PRJ_SRC_DIR}/tape_sort.cpp)
 target_include_directories(ext-sort
                              PRIVATE ${PRJ_INCLUDE_DIR})
 

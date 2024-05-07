@@ -41,6 +41,8 @@ public:
   void rewind_forward(size_t offset) override;
   void rewind_back(size_t offset) override;
 
+  bool eof();
+  bool bof();
   void to_end();
   void to_begin();
   fs::path path();

@@ -64,6 +64,14 @@ int tape::tape_convert(const std::string& str) {
   return result;
 }
 
+bool tape::eof() {
+  return head.eof();
+}
+
+bool tape::bof() {
+  return head.bof();
+}
+
 void tape::to_end() {
   while (!head.eof()) ++head;
 }
