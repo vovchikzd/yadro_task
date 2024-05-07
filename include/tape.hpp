@@ -23,8 +23,6 @@ class tape final: itape {
   void tape_sleep(const ull duration);
 
 public:
-  tape() = delete;
-
   template <std::convertible_to<fs::path> T>
   tape(T&& file, ull write_delay = 0, ull read_delay = 0, ull rewind_delay = 0,
        ull shift_delay = 0)
@@ -50,7 +48,7 @@ public:
 
 
 class convert_error final: public std::exception {
-  const char* message;
+  const char* message = nullptr;
 
 public:
   convert_error() = default;

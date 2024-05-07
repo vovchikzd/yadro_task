@@ -21,9 +21,8 @@ class tape_head final {
   void rtrim(std::string& str);
   void trim(std::string& str);
   std::string padding(int number);
-public:
-  tape_head() = delete;
 
+public:
   template <std::convertible_to<fs::path> T>
   tape_head(T&& path)
       : file_path(std::forward<T>(path))

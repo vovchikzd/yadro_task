@@ -6,6 +6,7 @@
 
 #include "init.hpp"
 #include "tape.hpp"
+#include "tape_sort.hpp"
 
 //std::string get_date_time() {
 //  std::stringstream result;
@@ -79,6 +80,13 @@ int main(int argc, char* argv[]) {
     std::cerr << "ERROR: " << exc.what() << '\n';
     return EXIT_FAILURE;
   }
+
+  tape input_tape(conf.input_file,
+                  conf.write_delay,
+                  conf.read_delay,
+                  conf.rewind_delay,
+                  conf.shift_delay);
+
 
   return EXIT_SUCCESS;
 }
