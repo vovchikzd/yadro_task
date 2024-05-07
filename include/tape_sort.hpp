@@ -7,6 +7,17 @@
 
 #include "tape.hpp"
 
+class sort_error: public std::exception {
+  const char* message = nullptr;
+
+public:
+  sort_error() = default;
+  sort_error(const char* message);
+  const char* what() const noexcept override;
+};
+
+
+
 class tape_sort {
   tape& input_tape;
   fs::path tmp_folder;
@@ -27,16 +38,6 @@ public:
   }
 
   void sort(fs::path& output_file);
-};
-
-
-class sort_error: public std::exception {
-  const char* message = nullptr;
-
-public:
-  sort_error() = default;
-  sort_error(const char* message);
-  const char* what() const noexcept override;
 };
 
 #endif  // YADRO_TASK_TAPE_SORT
