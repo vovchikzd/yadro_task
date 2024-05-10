@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 class tape_head final {
   const fs::path file_path;
   std::fstream file_stream;
-  const std::fpos<mbstate_t> begin_pos;
+  std::fpos<mbstate_t> begin_pos;
   char separator;
   bool readed = false;
   std::string str{};
@@ -26,15 +26,24 @@ public:
   template <std::convertible_to<fs::path> T>
   tape_head(T&& path)
       : file_path(std::forward<T>(path))
-      , file_stream(file_path, std::ios::in | std::ios::out)
-      , begin_pos(file_stream.tellg()) {
+      , file_stream(file_path, std::ios::in | std::ios::out) {
+
+    if (!file_stream.is_open()) {
+      file_stream.clear();
+      file_stream.open(file_path, std::ios::out); // create folder
+      file_stream.close();
+      file_stream.open(file_path, std::ios::in | std::ios::out);
+    }
+
     char peeked = file_stream.peek();
     if (peeked == EOF || peeked == '\n') { separator = '\n'; } 
     else {
       file_stream.seekg(11, std::ios::cur);
-      separator = file_stream.get();
+      separator = file_stream.peek();
       file_stream.seekg(begin_pos);
     }
+
+    begin_pos = file_stream.tellg();
   }
 
   void write(int number);

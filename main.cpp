@@ -8,14 +8,6 @@
 #include "tape.hpp"
 #include "tape_sort.hpp"
 
-//std::string get_date_time() {
-//  std::stringstream result;
-//  auto t  = std::time(nullptr);
-//  auto tm = std::localtime(&t);
-//  result << std::put_time(tm, "%d-%m-%Y_%H-%M-%S");
-//  return result.str();
-//}
-
 void print_help(std::ostream& stream = std::cout) {
   stream
     << "Usage: ext-sort INPUT FILE [OPTION ARGUMENT(S)]\n\n"

@@ -5,13 +5,11 @@
 
 bool tape_head::eof() {
   char ch = file_stream.peek();
-  if (ch == EOF || ch == '\n') return true;
-  return false;
+  return (ch == EOF || ch == '\n');
 }
 
 bool tape_head::bof() {
-  if (file_stream.tellg() == begin_pos) return true;
-  return false;
+  return file_stream.tellg() == begin_pos;
 }
 
 tape_head& tape_head::operator++() {

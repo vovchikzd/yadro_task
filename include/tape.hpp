@@ -3,8 +3,8 @@
 
 #include <concepts>
 #include <exception>
-#include <string>
 #include <filesystem>
+#include <string>
 
 #include "init.hpp"
 #include "itape.hpp"
@@ -32,6 +32,14 @@ public:
       , rewind_delay(rewind_delay)
       , shift_delay(shift_delay) {}
 
+  template <std::convertible_to<fs::path> T>
+  tape(T&& file, Conf& conf)
+      : head(std::forward<T>(file))
+      , write_delay(conf.write_delay)
+      , read_delay(conf.read_delay)
+      , rewind_delay(conf.rewind_delay)
+      , shift_delay(conf.shift_delay) {}
+
   void write(int number) override;
   int read() override;
 
@@ -47,7 +55,6 @@ public:
   void to_begin();
   fs::path path();
 };
-
 
 class convert_error final: public std::exception {
   const char* message = nullptr;
