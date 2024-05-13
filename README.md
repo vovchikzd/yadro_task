@@ -1,6 +1,8 @@
 ## Build
-``` shell
-cmake -S . -B .build && cmake --build .build
+``` bash
+git clone 'https://github.com/vovchikzd/yadro_task.git'
+cmake -S . -B .build
+cmake --build .build
 ```
 
 ## Usage
