@@ -19,8 +19,8 @@ public:
 class tape_sort {
   tape& input_tape;
   fs::path working_folder;
-  fs::path input_folder;
-  fs::path output_folder;
+  fs::path input_tmp_folder;
+  fs::path output_tmp_folder;
   std::vector<int> buf;
   size_t file_name_counter{};
 
@@ -29,23 +29,13 @@ class tape_sort {
 
   using iter = typename std::vector<int>::iterator;
   void write_sorted(iter begin, iter end);
-  void merge_sorted();
+  void merge_sorted(fs::path& output_file);
+  void create_folders(fs::path& tmp_folder);
+  void swap_directories();
+  void merge(const fs::path& first, const fs::path& second);
 
 public:
-  template <std::convertible_to<fs::path> T>
-  tape_sort(tape& input_tape, T&& tmp_folder, ull max_ram = 0)
-      : input_tape(input_tape) {
-    reserve_cap((max_ram / sizeof(int)) - 1);
-    working_folder = std::forward<T>(tmp_folder)/get_new_folder();
-
-    try {
-      fs::create_directory(working_folder);
-    } catch (std::bad_alloc& exc) {
-      throw sort_error("Cannot create temp directory");
-    } catch (fs::filesystem_error& exc) {
-      throw sort_error(exc.what());
-    }
-  }
+  tape_sort(tape& input_tape, fs::path& tmp_folder, ull max_ram = 0);
 
   void sort(fs::path& output_file);
 };

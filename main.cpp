@@ -73,11 +73,20 @@ int main(int argc, char* argv[]) {
     return EXIT_FAILURE;
   }
 
-  tape input_tape(conf.input_file,
-                  conf.write_delay,
-                  conf.read_delay,
-                  conf.rewind_delay,
-                  conf.shift_delay);
+  tape input_tape(conf.input_file, conf);
+
+  try {
+    tape_sort t_sort(input_tape, conf.tmp_folder, conf.max_ram);
+    t_sort.sort(conf.output_file);
+  } catch (convert_error&) {
+    return EXIT_FAILURE;
+  } catch (sort_error& exc) {
+    std::cerr << "ERROR: " << exc.what() << '\n';
+    return EXIT_FAILURE;
+  } catch (std::exception& exc) {
+    std::cerr << "ERROR: " << exc.what() << '\n';
+    return EXIT_FAILURE;
+  }
 
 
   return EXIT_SUCCESS;
