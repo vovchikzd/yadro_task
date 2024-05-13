@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.28)
 
 project(ext-sort
           LANGUAGES CXX)
@@ -6,22 +6,21 @@ project(ext-sort
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
+set(CMAKE_COLOR_DIAGNOSTICS On)
+add_compile_options(-Wall -Wextra -Wpedantic)
 
 set(PRJ_INCLUDE_DIR "include")
-set(PRJ_SRC_DIR "src")
-
-# only for ninja and only from 24 version
-if(CMAKE_GENERATOR STREQUAL "Ninja"
-     AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
-  set(CMAKE_COLOR_DIAGNOSTICS On) 
-endif()
+set(PRJ_MODULE_DIR "modules")
 
 add_executable(ext-sort main.cpp)
-target_sources(ext-sort
-                 PRIVATE
-                  ${PRJ_SRC_DIR}/init.cpp
-                  ${PRJ_SRC_DIR}/tape.cpp
-                  ${PRJ_SRC_DIR}/tape_head.cpp
-                  ${PRJ_SRC_DIR}/tape_sort.cpp)
+target_sources(ext-sort PRIVATE
+               FILE_SET modules TYPE CXX_MODULES
+               BASE_DIRS ${PRJ_MODULE_DIR}
+               FILES
+                 ${PRJ_MODULE_DIR}/init.cppm
+                 ${PRJ_MODULE_DIR}/tape.cppm
+                 ${PRJ_MODULE_DIR}/tape_head.cppm
+                 ${PRJ_MODULE_DIR}/tape_sort.cppm)
+
 target_include_directories(ext-sort
                              PRIVATE ${PRJ_INCLUDE_DIR})
