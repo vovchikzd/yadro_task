@@ -1,3 +1,8 @@
+## Build
+``` shell
+cmake -S . -B .build && cmake --build .build
+```
+
 ## Usage
 ``` shell
 ext-sort INPUT FILE [OPTION ARGUMENT(S)]
@@ -34,7 +39,3 @@ All numbers are expected to be integer non-negative values, otherwise will be
 used default (zero) value
 ```
 
-## Build
-``` shell
-cmake -S . -B .build && cmake --build .build
-```
