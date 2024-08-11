@@ -1,43 +1,28 @@
-## Build
-``` bash
-git clone 'https://github.com/vovchikzd/yadro_task.git'
-cmake -S . -B .build
-cmake --build .build
-```
+## What this is
+This is a task from one of the my interviews. Basically, it's just an external sort.
 
-## Usage
-``` shell
-ext-sort INPUT FILE [OPTION ARGUMENT(S)]
+### Task text (translate)
+A tape-type data storage device is designed for sequential recording and reading of data. The read/write magnetic head is stationary during reading and writing, and the tape can move in both directions. Writing and reading information is possible in the tape cell on which the magnetic head is currently located. Moving the tape is a time-consuming operation - the tape is not designed for random access.
 
-Tape file (input file) must has numbers with padding up to 11 characters plus
-space/tab/newline separator, otherwise all operations (write/read/rewind/shift)
-to this tape are ambiguous
-All invalib options will be ignored (as well as all unrecognized arguments)
-First argument being a file is considered as input file
+There is an input tape of length N (where N is large) containing elements of type integer (2<sup>32</sup>). There is an output tape of the same length. It is necessary to write elements from the input tape, sorted in ascending order, into the output tape. There is a limitation on the use of RAM - no more than M bytes (M can be < N, i.e. it will not be possible to load all the data from the tape into RAM). To implement the algorithm, you can use a reasonable number of time tapes, i.e. tapes on which you can store some temporary information necessary during the operation of the algorithm.
 
-Options:
-     -h, --help    print this help message (in case this option will be pass
-                   with any others options it will be ignored)
-     
-     -o,           specify name of outputs file (default is name of input file
-                   with .res format)
-     
-     -c,           specify config file, all settings are written in in the
-                   order 'write read rewind shift' and must be space/tab/newline
-                   separated. All delays in seconds. Optionally as fifth setting
-                   can be specifed max availabe RAM in bytes
-     
-     -m,           specify max available RAM for sort in bytes
-     
-     -M,           specify max abailable RAM for sort in megabytes
+You need to create a C++ project that compiles into a console application that implements an algorithm for sorting data from the input tape to the output tape. You need to do the following:
+- Define an interface for working with a tape type device.
+- Write a class that implements this interface and emulates working with the tape using a regular file. It should be possible to configure (without recompilation - for example, through an external configuration file that will be read at the start of the application) delays for writing/reading an element from the tape, rewinding the tape, and shifting the tape by one position.
+- Temporary tape files can be saved to the tmp directory.
+- Write a class that implements an algorithm for sorting data from the input tape to the output tape.
+- The console application must accept the name of the input and output files as input and perform sorting.
+- It is advisable to write unit tests.
 
-Default value for any setting is zero.
-To skip any setting in config file, its value must be zero.
-If max RAM not specified (or specified as zero) I assume that there isn't
-restriction in RAM usage.
-In case max RAM usage is specified both through config file and argument,
-the value from file is used
-All numbers are expected to be integer non-negative values, otherwise will be
-used default (zero) value
-```
+### Original task text
+Устройство хранения данных типа лента (Tape) предназначено для последовательной записи и чтения данных. Считывающая/записывающая магнитная головка неподвижна во время чтения и записи, а лента имеет возможность двигаться в обоих направлениях. Запись и чтение информации возможны в ячейку ленты, на которой в данный момент находится магнитная головка. Перемещения ленты – затратная по времени операция – лента не предназначена для произвольного доступа.
 
+Имеется входная лента длины N (где N – велико), содержащая элементы типа integer (2<sup>32</sup>). Имеется выходная лента такой же длины. Необходимо записать в выходную ленту отсортированные по возрастанию элементы с входной ленты. Есть ограничение по использованию оперативной памяти – не более M байт (M может быть < N, т.е. загрузить все данные с ленты в оперативную память не получится). Для реализации алгоритма можно использовать разумное количество временных лент, т.е. лент, на которых можно хранить какую-то временную информацию, необходимую в процессе работы алгоритма.
+
+Необходимо создать проект С++, компилируемый в консольное приложение, которое реализует алгоритм сортировки данных с входной ленты на выходную. Необходимо сделать следующее:
+- Определить интерфейс для работы с устройством типа лента.
+- Написать класс, реализующий этот интерфейс и эмулирующий работу с лентой посредством обычного файла. Должно быть возможно сконфигурировать (без перекомпиляции – например, через внешний конфигурационный файл, который будет прочитан на старте приложения) задержки по записи/чтению элемента с ленты, перемотки ленты, и сдвига ленты на одну позицию.
+- Файлы временных лент можно сохранять в директорию tmp.
+- Написать класс, реализующий алгоритм сортировки данных с входной ленты на выходную.
+- Консольное приложение должно принимать на вход имя входного и выходного файлов и производить сортировку.
+- Желательно написать юнит-тесты.
