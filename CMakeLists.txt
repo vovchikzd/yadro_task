@@ -9,16 +9,20 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
   message(FATAL_ERROR "Requires at least clang 17")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
        AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14)
-  message(FATAL_ERROR "Requires at least g++ 14")
+  message(FATAL_ERROR "Requires at least gcc 14")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC"
        AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.34)
   message(FATAL_ERROR "Requires at least MSVC 19.34")
 endif()
 
 # check generators
-if(NOT CMAKE_GENERATOR STREQUAL "Ninja"
-   AND NOT "Visual Studio" STRLESS_EQUAL CMAKE_GENERATOR)
-  message(FATAL_ERROR "Requires Ninja 1.11 or Visual Studio 17 2022 generator")
+if(CMAKE_GENERATOR STREQUAL "Ninja")
+  message(WARNING "Requires at least Ninja v1.11")
+elseif(CMAKE_GENERATOR MATCHES "Visual Studio"
+       AND MSVC_TOOLSET_VERSION LESS 143)
+  message(FATAL_ERROR "Requires at lest Visual Studio 17 2022 generator")
+else()
+  message(FATAL_ERROR "Requires Ninja or Visual Studio generator")
 endif()
 
 set(CMAKE_CXX_STANDARD 23)
@@ -27,8 +31,8 @@ set(CMAKE_CXX_EXTENSIONS Off)
 set(CMAKE_COLOR_DIAGNOSTICS On)
 add_compile_options(-Wall -Wextra -Wpedantic)
 
-set(PRJ_INCLUDE_DIR "include")
-set(PRJ_MODULE_DIR "modules")
+set(PRJ_INCLUDE_DIR include)
+set(PRJ_MODULE_DIR modules)
 
 add_executable(ext-sort main.cpp)
 target_sources(ext-sort PRIVATE
